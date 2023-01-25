@@ -1,13 +1,10 @@
 import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.Keys;
-
 import java.time.Duration;
-
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CardPlanningTest {
 
     String deleteString = Keys.chord(Keys.CONTROL, "a") + Keys.DELETE;
@@ -19,41 +16,12 @@ public class CardPlanningTest {
     }
 
     @Test
-    @Order(1)
-    void test_ToReplanNotificationTrigger() {
-        $("[data-test-id=city] input").setValue("Краснодар");
-        $("[data-test-id=date] input").setValue(deleteString);
-        $("[data-test-id=date] input").setValue(DataGenerator.generateDate(3));
-        $("[data-test-id=name] input").setValue("Иван Иванов-Петров");
-        $("[data-test-id=phone] input").setValue("+79998887766");
-        $("[data-test-id=agreement]").click();
-        $x("//span[contains(text(), 'Запланировать')]").click();
-        $("[data-test-id=success-notification]").should(Condition.appear);
-    }
-
-    @Test
-    @Order(2)
-    void testTo_ReplanlNotificationAppear() {
-        $("[data-test-id=city] input").setValue("Краснодар");
-        $("[data-test-id=date] input").setValue(deleteString);
-        $("[data-test-id=date] input").setValue(DataGenerator.generateDate(7));
-        $("[data-test-id=name] input").setValue("Иван Иванов-Петров");
-        $("[data-test-id=phone] input").setValue("+79998887766");
-        $("[data-test-id=agreement]").click();
-        $x("//span[contains(text(), 'Запланировать')]").click();
-        $("[data-test-id=replan-notification]").should(Condition.appear);
-        $("[data-test-id=replan-notification] button").click();
-        $("[data-test-id=success-notification]").should(Condition.appear).shouldHave(Condition.text("Встреча успешно запланирована на " + DataGenerator.generateDate(7)));
-    }
-
-    @Test
-    @Order(3)
     void replanInSameWindowTest() {
-        $("[data-test-id=city] input").setValue("Владивосток");
+        $("[data-test-id=city] input").setValue(validUser.getCity());
         $("[data-test-id=date] input").setValue(deleteString);
         $("[data-test-id=date] input").setValue(DataGenerator.generateDate(3));
-        $("[data-test-id=name] input").setValue("Владимир Васнецов");
-        $("[data-test-id=phone] input").setValue("+79998887799");
+        $("[data-test-id=name] input").setValue(validUser.getName());
+        $("[data-test-id=phone] input").setValue(validUser.getPhone());
         $("[data-test-id=agreement]").click();
         $x("//span[contains(text(), 'Запланировать')]").click();
         $("[data-test-id=success-notification]").should(Condition.appear);
